@@ -589,7 +589,13 @@ namespace OPC_UA.NET_stack_wrapper
                 List<ReferenceDescription> server = refs.FindAll(a => a.DisplayName.ToString().Contains("Server"));
                 foreach(ReferenceDescription rd in server)
                     refs.Remove(rd);
-            }  
+            } else
+            {
+                // remove anything not related to server
+                List<ReferenceDescription> server = refs.FindAll(a => !a.DisplayName.ToString().Contains("Server"));
+                foreach (ReferenceDescription rd in server)
+                    refs.Remove(rd);
+            } 
 
             return refs; 
         } 
@@ -605,24 +611,41 @@ namespace OPC_UA.NET_stack_wrapper
             if (interval < 0) CurrentPublishingInterval = DefaultVariables.DefaultPublishingInterval;
             // else assign a custom interval
             else CurrentPublishingInterval = interval;
-        }   
+        }
 
-        /// <summary>BrowseServer is a utility method that used RecursiveBrowse to iterate the complete OPC server node tree.
+        /// <summary>BrowseServerNode is a utility method that uses RecursiveBrowse to iterate the complete OPC node tree from the Server node.
         /// <example> Equivalent of:
         /// <code>
-        /// ReferenceDescriptionCollection TopLevelNodes = BrowseNode();
+        /// ReferenceDescriptionCollection TopLevelNodes = BrowseNode(serverBrowse: true);
         /// </code>
         /// <code>
         /// ReferenceDescriptionCollection AllServerNodes = RecursiveBrowse(TopLevelNodes);
         /// </code>
         /// </example>
         /// </summary>
-        public ReferenceDescriptionCollection BrowseServer()
+        public ReferenceDescriptionCollection BrowseServerNode()
         { 
             // calls browsenodes from the top level node
             // and performs recursive browse on the reference collection
             return RecursiveBrowse(BrowseNode(serverBrowse: true));
-        }  
+        }
+
+        /// <summary>BrowseObjectsNode is a utility method that uses RecursiveBrowse to iterate the complete OPC node tree from the Objects node.
+        /// <example> Equivalent of:
+        /// <code>
+        /// ReferenceDescriptionCollection TopLevelNodes = BrowseNode(serverBrowse: false);
+        /// </code>
+        /// <code>
+        /// ReferenceDescriptionCollection AllServerNodes = RecursiveBrowse(TopLevelNodes);
+        /// </code>
+        /// </example>
+        /// </summary>
+        public ReferenceDescriptionCollection BrowseObjectsNode()
+        {
+            // calls browsenodes from the top level node
+            // and performs recursive browse on the reference collection
+            return RecursiveBrowse(BrowseNode(serverBrowse: false));
+        } 
 
         /// <summary>RecursiveBrowse browses a complete ReferenceDescriptionCollection and all its children by DFS.
         /// <para>Params:</para> 
@@ -961,7 +984,7 @@ namespace OPC_UA.NET_stack_wrapper
                 // If the connection and the subscription session were
                 // successfull, iterate the server to verify that
                 // previous references still exist: nodesIntact
-                List<string> nodesIntact = GetDisplayNames(BrowseServer());
+                List<string> nodesIntact = GetDisplayNames(BrowseObjectsNode());
 
                 // Iterate the stored references to verify that the nodes still
                 // exist on the server before subscribing
@@ -1072,7 +1095,7 @@ namespace OPC_UA.NET_stack_wrapper
             }
 
             // If the changes are not applies, write the exception to log.
-            catch (Exception e)
+            catch (Exception)
             {  // Add to log
                 Log.Log(LogLevel.ERROR, "Unable to update subscription session on client with endpoint: " + URL);
             }

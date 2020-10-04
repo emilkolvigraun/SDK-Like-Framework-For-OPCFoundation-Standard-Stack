@@ -12,3 +12,7 @@
 *.AssemblyInfo.cs
 *.CopyComplete
 *.txt
+*.user
+*.nuspec
+*.pubxml
+*.nupkg

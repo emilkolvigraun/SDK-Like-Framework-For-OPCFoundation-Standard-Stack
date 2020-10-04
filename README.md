@@ -1,6 +1,6 @@
-# Wrapper for the OPC UA C# Stack
+# A minimal SDK-Like framework for using the OPCFoundation Standard Stack
 
-This is a wrapper for the OPC UA stack which can be [found here](https://github.com/OPCFoundation/UA-.NETStandard). 
+The standard OPCFoundation stack can be [found here.](https://github.com/OPCFoundation/UA-.NETStandard). 
 
 To use it, please install the OPCFoundation standard stack through NuGet:
 

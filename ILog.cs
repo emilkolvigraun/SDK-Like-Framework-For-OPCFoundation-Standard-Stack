@@ -15,10 +15,10 @@ namespace OPC_UA.NET_stack_wrapper
     {
         // implement to provide a way of adjusting the applicaple log level
         // ALL allows all levels to be printed
-        public void SetLogLevel(List<LogLevel> logLevel);
+        void SetLogLevel(List<LogLevel> logLevel);
 
         // Implement log to determine what happens with the message,
         // DefaultLog implements Ilog and prints to Console
-        public void Log(LogLevel tag, string message);
+        void Log(LogLevel tag, string message);
     }
 }
