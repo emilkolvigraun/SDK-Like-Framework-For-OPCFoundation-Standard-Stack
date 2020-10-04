@@ -1,0 +1,14 @@
+*.pdb
+*.dll
+*.sln 
+*.vs
+*.csproj
+*.json
+*.props
+*.targets
+*.cache
+*.AssemblyAttributes.cs
+*.exe
+*.AssemblyInfo.cs
+*.CopyComplete
+*.txt
